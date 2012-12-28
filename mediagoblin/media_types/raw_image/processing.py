@@ -19,8 +19,8 @@ import os
 import logging
 
 from mediagoblin import mg_globals as mgg
-from mediagoblin.processing import create_pub_filepath, FilenameBuilder, \
-    resize_image
+from mediagoblin.processing import create_pub_filepath, FilenameBuilder
+from mediagoblin.media_types.image.processing import resize_image
 from mediagoblin.tools.exif import extract_exif, \
     clean_exif, get_gps_data, exif_image_needs_rotation
 
