@@ -15,9 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from mediagoblin.media_types.image.models import ImageData
-
-BACKREF_NAME = "image__media_data"
-
-DATA_MODEL = ImageData
-MODELS = [ImageData]
+from mediagoblin.media_types.image.models import (
+    ImageData, BACKREF_NAME, DATA_MODEL, MODELS)

@@ -14,4 +14,5 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-MIGRATIONS = {}
+from mediagoblin.media_types.image.migrations import (
+    MIGRATIONS)

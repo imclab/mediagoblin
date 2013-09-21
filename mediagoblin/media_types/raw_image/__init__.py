@@ -13,15 +13,43 @@
 #
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+import logging
 
-from mediagoblin.media_types.raw_image.processing import process_image, \
-    sniff_handler
+from mediagoblin.media_types.image import ImageMediaManager
+from mediagoblin.tools import pluginapi
+
+from .processing import sniff_handler, RawImageProcessingManager
+
+_log = logging.getLogger(__name__)
 
 
-MEDIA_MANAGER = {
-    "human_readable": "Raw image",
-    "processor": process_image,
-    "sniff_handler": sniff_handler,
-    "display_template": "mediagoblin/media_displays/image.html",
-    "default_thumb": "images/media_thumbs/image.png",
-    "accepted_extensions": ["nef"]}
+ACCEPTED_EXTENSIONS = ["nef", "cr2"]
+MEDIA_TYPE = 'mediagoblin.media_types.raw_image'
+
+
+def setup_plugin():
+    pluginapi.get_config(MEDIA_TYPE)
+
+
+class RawImageMediaManager(ImageMediaManager):
+    human_readable = "Raw image"
+    #display_template = "mediagoblin/media_displays/image.html"
+    #default_thumb = "images/media_thumbs/image.png"
+
+    #media_fetch_order = [u'medium', u'original', u'thumb']
+
+
+def get_media_type_and_manager(ext):
+    _log.debug('getmediatype: '+ ext)
+    if ext.lower() in ACCEPTED_EXTENSIONS:
+        return MEDIA_TYPE, RawImageMediaManager
+    _log.debug('getmediatype NOFOUND!')
+
+
+hooks = {
+    'setup': setup_plugin,
+    'get_media_type_and_manager': get_media_type_and_manager,
+    'sniff_handler': sniff_handler,
+    ('media_manager', MEDIA_TYPE): lambda: RawImageMediaManager,
+    ('reprocess_manager', MEDIA_TYPE): lambda: RawImageProcessingManager,
+}
